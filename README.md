@@ -1,1 +1,22 @@
-"# webvoluntarios-api" 
+# webvoluntarios-api
+
+
+## .env
+
+```
+NODE_ENV=development
+PORT=3000
+DB_HOST=localhost
+DB_PORT=3306
+DB_NAME=sistema
+DB_USER=root
+DB_PASS=pass
+JWT_SECRET=SenhaDificl233@3
+```
+### Rodar projeto
+
+```
+npm i 
+npm run migrate
+npm run dev
+```
