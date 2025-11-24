@@ -1,7 +1,7 @@
 {
   "type": "commonjs",
   "scripts": {
-    "migrate:fresh": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
+    "migrate": "sequelize-cli db:drop && sequelize-cli db:create && sequelize-cli db:migrate && sequelize-cli db:seed:all",
     "dev": "nodemon index.js"
   },
   "dependencies": {
