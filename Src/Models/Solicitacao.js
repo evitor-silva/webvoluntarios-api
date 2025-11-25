@@ -5,7 +5,6 @@ class Solicitacao extends Model {
         Solicitacao.init(
             {
                 id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-                solicitacoes_id: { type: DataTypes.INTEGER, allowNull: false },
                 id_usuario: { type: DataTypes.INTEGER, allowNull: false },
             },
             { sequelize, modelName: 'Solicitacao', tableName: 'Solicitacao', timestamps: false }

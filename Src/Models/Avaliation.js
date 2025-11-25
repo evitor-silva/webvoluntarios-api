@@ -5,7 +5,14 @@ class Avaliation extends Model {
         Avaliation.init(
             {
                 id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
-                solicitacoes_id: { type: DataTypes.INTEGER, allowNull: false },
+                solicitacoes_id: {
+                    type: DataTypes.INTEGER,
+                    allowNull: false,
+                    references: {
+                        model: 'Solicitacao',
+                        key: 'id'
+                    }
+                },
                 comentario: { type: DataTypes.TEXT, allowNull: true, defaultValue: null },
                 nota: { type: DataTypes.INTEGER, allowNull: false, defaultValue: 0 },
                 data: { type: DataTypes.DATE, allowNull: false, defaultValue: DataTypes.NOW },

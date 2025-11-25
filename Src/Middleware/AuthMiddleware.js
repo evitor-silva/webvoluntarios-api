@@ -12,7 +12,7 @@ const AuthMiddleware = async (req, res, next) => {
             jwt.verify(bearer, process.env.JWT_SECRET);
             return next();
         } catch (err) {
-            return res.status(401).send({ message: 'Token inválido ou expirado' });
+            return res.status(401).send({ message: err});
         }
     }
 

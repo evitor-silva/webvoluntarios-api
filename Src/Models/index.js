@@ -24,7 +24,6 @@ const models = {
   Avaliation,
 };
 
-
 Object.values(models).forEach((m) => {
   if (typeof m.initModel === "function") m.initModel(sequelize);
 });

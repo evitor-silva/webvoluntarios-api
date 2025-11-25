@@ -53,6 +53,7 @@ const login = async (req, res) => {
 
         let exp = Math.floor(Date.now() / 1000) + (60 * 60);
         let token = jwt.sign({
+            id: existingUser.id,
             exp: exp,
             name: existingUser.name
         }, process.env.JWT_SECRET)
