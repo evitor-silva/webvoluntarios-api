@@ -6,7 +6,7 @@ const AuthMiddleware = async (req, res, next) => {
     const authHeader = req.headers.authorization;
 
     if (authHeader && authHeader.startsWith('Bearer ')) {
-        const bearer = authHeader.substring(7); // remove "Bearer "
+        const bearer = authHeader.substring(7);
 
         try {
             jwt.verify(bearer, process.env.JWT_SECRET);

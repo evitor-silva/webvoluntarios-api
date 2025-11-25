@@ -1,27 +1,27 @@
 const sequelize = require('../Database/db.js');
 
-const Categoria = require('./Category.js');
+const Category = require('./Category.js');
 const User = require("./User.js");
-const Servico = require('./Service.js');
+const Service = require('./Service.js');
 const Conquista = require('./Conquest.js');
 const Recompensa = require('./Rewards.js');
 const Pontuacao = require('./Ponts.js');
 const UsuariosConquista = require('./UserRewards.js');
 const Solicitacao = require('./Solicitacao.js');
 const Nivel = require('./Level.js');
-const Avaliacao = require('./Avaliation.js');
+const Avaliation = require('./Avaliation.js');
 
 const models = {
-  Categoria,
   User,
-  Servico,
+  Service,
   Conquista,
   Recompensa,
+  Category,
   Pontuacao,
   UsuariosConquista,
   Solicitacao,
   Nivel,
-  Avaliacao,
+  Avaliation,
 };
 
 
@@ -29,7 +29,7 @@ Object.values(models).forEach((m) => {
   if (typeof m.initModel === "function") m.initModel(sequelize);
 });
 
-const { Categoria: C, User: U, Servico: S, Conquista: Q, Recompensa: R, Pontuacao: P, UsuariosConquista: UC, Solicitacao: Sol, Nivel: N, Avaliacao: A } = models;
+const { Category: C, User: U, Service: S, Conquista: Q, Recompensa: R, Pontuacao: P, UsuariosConquista: UC, Solicitacao: Sol, Nivel: N, Avaliation: A } = models;
 
 C.hasMany(S, { foreignKey: 'categorias_id' });
 S.belongsTo(C, { foreignKey: 'categorias_id' });

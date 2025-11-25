@@ -7,7 +7,7 @@ class Category extends Model {
         id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
         nome: { type: DataTypes.STRING(45), allowNull: false },
       },
-      { sequelize, modelName: 'Categoria', tableName: 'categorias', timestamps: false }
+      { sequelize, modelName: 'Category', tableName: 'categorias', timestamps: false }
     );
     return Category;
   }
