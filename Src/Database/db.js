@@ -18,7 +18,7 @@ try {
     sequelize.authenticate();
     console.log("Conexão estabelecida com sucesso!");
 } catch (error) {
-    console.error("Erro ao conectar no banco:", error);
+    console.log("Erro ao conectar no banco:", error);
 }
 
 module.exports = sequelize;

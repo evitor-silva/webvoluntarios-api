@@ -8,7 +8,13 @@ const index = async (req, res) => {
 }
 
 const store = async (req, res) => {
-    return res.send('passou')
+    const person = jwt.verify(req.headers.authorization.substring(7), process.env.JWT_SECRET)
+    await Solicitacao.create({
+        id_usuario: person.id
+    })
+    return res.send({
+        message: 'Criado com sucesso'
+    })
 }
 
 module.exports = {
