@@ -10,14 +10,13 @@ const index = async (req, res) => {
 
 const store = async (req, res) => {
     const { categorias_id, titulo, descricao } = req.body;
-    const person = jwt.verify(req.headers.authorization.substring(7), process.env.JWT_SECRET)
 
     try {
         await Service.create({
             titulo: titulo,
             descricao: descricao,
             categorias_id: categorias_id,
-            proprietario_usuario_id: person.id,
+            proprietario_usuario_id: req.user.id,
         })
 
         return res.status(201).send({

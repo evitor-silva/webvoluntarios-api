@@ -9,8 +9,13 @@ const AuthMiddleware = async (req, res, next) => {
         const bearer = authHeader.substring(7);
 
         try {
-            jwt.verify(bearer, process.env.JWT_SECRET);
-            return next();
+            jwt.verify(bearer, process.env.JWT_SECRET, (err, decoded) => {
+                if (err) {
+                    return res.status(401).send({ message: 'Token inválido' });
+                }
+                req.user = decoded;
+                return next();
+            });
         } catch (err) {
             return res.status(401).send({ message: err});
         }
