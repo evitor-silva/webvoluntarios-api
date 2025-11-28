@@ -5,7 +5,7 @@
 
 ```
 NODE_ENV=development
-PORT=3000
+PORT=3333
 DB_HOST=localhost
 DB_PORT=3306
 DB_NAME=sistema

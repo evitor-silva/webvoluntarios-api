@@ -8,33 +8,42 @@ const register = async (req, res) => {
     const { email, password, name } = req.body;
 
     try {
+        console.log('Iniciando registro de usuário');
+        console.log('Dados recebidos:', { email, name });
+
         const existingUser = await User.findOne({ where: { email } });
+        console.log('Verificação de e-mail duplicado concluída');
 
         if (existingUser) {
-            return res.status(401).send({
-                status: 401,
+            console.log('Erro: E-mail já registrado:', email);
+            return res.status(409).send({
+                status: 409,
                 message: 'Conta já registrada'
-            })
+            });
         }
 
         const salt = bcrypt.genSaltSync(10);
+        const hashedPassword = bcrypt.hashSync(password, salt);
+        console.log('Senha criptografada com sucesso');
 
-        User.create({
-            'name': name,
-            'password': bcrypt.hashSync(password, salt),
-            'email': email
-        })
+        await User.create({
+            name: name,
+            password: hashedPassword,
+            email: email
+        });
 
+        console.log('Usuário registrado com sucesso:', email);
         return res.status(201).send({
             status: 201,
             message: 'Conta criada com sucesso'
-        })
+        });
 
     } catch (error) {
+        console.error('Erro ao registrar usuário:', error);
         return res.status(500).send({
             status: 500,
-            message: error
-        })
+            message: 'Erro interno do servidor'
+        });
     }
 
 }
