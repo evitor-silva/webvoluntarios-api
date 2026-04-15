@@ -1,0 +1,12 @@
+- name: 🚀 Deploy API
+  uses: SamKirkland/FTP-Deploy-Action@v4.3.6
+  with:
+    server: ftp.webvoluntarios.kinghost.net
+    username: ${{ secrets.FTP_USER }}
+    password: ${{ secrets.FTP_PASSWORD }}
+    local-dir: ./api
+    server-dir: /api
+    exclude: |
+      **/.git*
+      **/.git*/**
+      **/node_modules/**
