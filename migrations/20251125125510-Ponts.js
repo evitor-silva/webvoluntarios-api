@@ -17,7 +17,7 @@ module.exports = {
         }
       },
       id_usuario: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false,
         references: {
           model: 'users',

@@ -1,25 +1,34 @@
-const { Rewards } = require("../Models/Rewards");
-const { Ponts } = require("../Models/Ponts");
+const { EventEmitter } = require('events');
+const gamificationEvents = new EventEmitter();
 
-const Gamificacao = async (acao, usuarioId, servicoId) => {
+const { Recompensa } = require("../models");
+const { Pontuacao } = require("../models");
+
+gamificationEvents.on('disparar_pontuacao', async (data) => {
+    const { acao, usuarioId, servicoId } = data;
+
     try {
-        const getGame = await Rewards.findOne({ where: { acao } });
+        const getGame = await Recompensa.findOne({
+            where: { acao },
+            attributes: ['id']
+        });
+
         if (!getGame) {
-            throw new Error("Recompensa não encontrada para a ação: " + acao);
+            console.error(`[Gamificação] Recompensa não encontrada para a ação: ${acao}`);
+            return;
         }
 
-        await Ponts.create({
+        await Pontuacao.create({
             id_recompensa: getGame.id,
-            id_usuario: usuarioId,
             id_servico: servicoId,
+            id_usuario: usuarioId,
             data: new Date()
         });
 
-        return { success: true, message: "Pontuação registrada com sucesso!" };
+        console.log(`[Gamificação] Sucesso: Ação '${acao}' computada para o usuário ${usuarioId}`);
     } catch (error) {
-        console.error("Erro na gamificação:", error);
-        return { success: false, message: "Erro ao registrar pontuação" };
+        console.error("Erro em background na gamificação:", error);
     }
-};
+});
 
-module.exports = Gamificacao;
+module.exports = gamificationEvents;

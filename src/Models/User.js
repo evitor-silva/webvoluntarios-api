@@ -3,7 +3,7 @@ const { DataTypes, Model, Sequelize } = require('sequelize');
 class User extends Model {
   static initModel(sequelize) {
     User.init({
-      id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
+      id: { type: DataTypes.UUID, primaryKey: true, defaultValue: DataTypes.UUIDV4 },
       name: { type: DataTypes.STRING(45), allowNull: false },
       email: { type: DataTypes.STRING(45), allowNull: false, unique: true },
       password: { type: DataTypes.STRING(255), allowNull: false },

@@ -1,6 +1,8 @@
 const {Service} = require("../Models/index.js")
-const {Gameficacao} = require("../Util/Gamificacao")
 const jwt = require('jsonwebtoken');
+const sequelize = require("../Database/db");
+const gamificationEvents = require('../Util/Gamificacao');
+
 
 const index = async (req, res) => {
     const all = await Service.findAll({
@@ -16,28 +18,32 @@ const index = async (req, res) => {
 }
 
 const store = async (req, res) => {
-    const {categorias_id, titulo, descricao} = req.body;
+    const t = await sequelize.transaction();
+    let servicoSalvo;
 
     try {
         const servico = await Service.create({
-            titulo: titulo,
-            descricao: descricao,
-            categorias_id: categorias_id,
-            proprietario_usuario_id: req.user.id,
-        })
+            titulo: req.body.titulo,
+            descricao: req.body.descricao,
+            categorias_id: req.body.categorias_id,
+            proprietario_usuario_id: req.user.id
+        }, { transaction: t });
 
-        return res.status(201).send({
-            message: "Serviço criado com sucesso"
-        })
+        await t.commit();
 
-        Gameficacao("Serviço criado", req.user.id, servico.get().id);
-
+        gamificationEvents.emit('disparar_pontuacao', {
+            acao: "SERVICO_CRIADO",
+            usuarioId: req.user.id,
+            servicoId: servicoSalvo.id
+        });
     } catch (error) {
-        return res.status(401).send(
-            {message: error}
-        )
+        await t.rollback();
+        console.error("Erro ao salvar serviço no banco:", error);
+        return res.status(500).json({ error: "Erro ao criar serviço." });
     }
-}
+
+    return res.status(201).json(servicoSalvo);
+};
 
 module.exports = {
     store,

@@ -23,4 +23,5 @@ class Avaliation extends Model {
     }
 }
 
+
 module.exports = Avaliation;

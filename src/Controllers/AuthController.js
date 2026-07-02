@@ -1,4 +1,4 @@
-const {User} = require('../Models/index.js')
+const { User, Pontuacao, Recompensa, Service } = require('../models/index.js');
 const bcrypt = require('bcrypt');
 const jwt = require('jsonwebtoken');
 const dotenv = require("dotenv")
@@ -7,7 +7,7 @@ dotenv.config()
 const register = async (req, res) => {
     const {email, password, name} = req.body;
 
-    if(email == null || password == null || name == null)
+    if (email == null || password == null || name == null)
         return res.status(409).send({
             status: 401,
             message: `Campos não foram preenchidos`
@@ -64,7 +64,7 @@ const login = async (req, res) => {
             })
         }
 
-        let exp = Math.floor(Date.now() / 1000) + (60 * 60 *2 );
+        let exp = Math.floor(Date.now() / 1000) + (60 * 60 * 2);
         let token = jwt.sign({
             id: existingUser.id,
             exp: exp,
@@ -85,7 +85,23 @@ const login = async (req, res) => {
     }
 }
 
+const search = async (req, res) => {
+    const token = req.headers.authorization.split(" ")[1];
+    const decoded = jwt.decode(token);
+
+    const user = await User.findByPk(decoded?.id, {
+        attributes: { exclude: ['password'] },
+        include: [
+            {
+                model: Service
+            }
+        ]
+    });
+
+    return res.status(200).send(user.get())
+}
 module.exports = {
     register,
-    login
+    login,
+    search
 }

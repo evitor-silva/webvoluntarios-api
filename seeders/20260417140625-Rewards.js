@@ -5,11 +5,11 @@ module.exports = {
     async up(queryInterface, Sequelize) {
         await queryInterface.bulkInsert('recompensas', [
             {
-                acao: "Serviço criado",
+                acao: "SERVICO_CRIADO",
                 pontos: 10
             },
             {
-                acao: "Avaliar um serviço",
+                acao: "AVALIAR_SERVICO",
                 pontos: 15
             }
         ], {});

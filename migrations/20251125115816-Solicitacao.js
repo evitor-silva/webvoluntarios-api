@@ -9,7 +9,7 @@ module.exports = {
     await queryInterface.createTable('Solicitacao', {
       id: { type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true },
       id_usuario: {
-        type: DataTypes.INTEGER,
+        type: DataTypes.UUID,
         allowNull: false,
         references: {
           model: 'users',
