@@ -14,8 +14,6 @@ const register = async (req, res) => {
         });
 
     try {
-        console.log('Iniciando registro de usuário');
-        console.log('Dados recebidos:', {email, name});
 
         const existingUser = await User.findOne({where: {email}});
         console.log('Verificação de e-mail duplicado concluída');
@@ -66,11 +64,12 @@ const login = async (req, res) => {
             })
         }
 
-        let exp = Math.floor(Date.now() / 1000) + (60 * 60);
+        let exp = Math.floor(Date.now() / 1000) + (60 * 60 *2 );
         let token = jwt.sign({
             id: existingUser.id,
             exp: exp,
-            name: existingUser.name
+            name: existingUser.name,
+            expiresIn: exp,
         }, process.env.JWT_SECRET)
 
         return res.status(200).send({

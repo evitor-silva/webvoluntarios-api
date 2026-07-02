@@ -1,27 +1,21 @@
 const jwt = require('jsonwebtoken');
-const dotenv = require("dotenv")
-dotenv.config()
+require('dotenv').config();
 
-const AuthMiddleware = async (req, res, next) => {
+const AuthMiddleware = (req, res, next) => {
     const authHeader = req.headers.authorization;
 
-    if (authHeader && authHeader.startsWith('Bearer ')) {
-        const bearer = authHeader.substring(7);
-
-        try {
-            jwt.verify(bearer, process.env.JWT_SECRET, (err, decoded) => {
-                if (err) {
-                    return res.status(401).send({ message: 'Token inválido' });
-                }
-                req.user = decoded;
-                return next();
-            });
-        } catch (err) {
-            return res.status(401).send({ message: err});
-        }
+    if (!authHeader || !authHeader.startsWith('Bearer ')) {
+        return res.status(401).json({ message: 'Sem autorização' });
     }
 
-    return res.status(401).send({ message: 'Sem autorização' });
-}
+    const token = authHeader.split(' ')[1];
+
+    try {
+        req.user = jwt.verify(token, process.env.JWT_SECRET);
+        return next();
+    } catch (err) {
+        return res.status(401).json({ message: 'Token inválido' });
+    }
+};
 
 module.exports = AuthMiddleware;
